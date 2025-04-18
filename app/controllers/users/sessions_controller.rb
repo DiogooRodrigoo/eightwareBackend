@@ -9,7 +9,14 @@ class Users::SessionsController < Devise::SessionsController
         logger.debug("Usuário autenticado: #{resource.email}")
         logger.debug("Token gerado: #{token}")
 
-    render json: { message:"Login realizado com sucesso", user: resource, token: token }, status: :ok
+    render json: {
+        message:"Login realizado com sucesso", 
+        user: {
+            id: resource.id, 
+            full_name: resource.full_name,
+            email: resource.email}, 
+        token: token }, 
+        status: :ok
     else
         render json: { message: "Erro ao realizar login" }, status: :unauthorized
     end
