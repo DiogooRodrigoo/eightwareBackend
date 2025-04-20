@@ -1,4 +1,16 @@
 # Be sure to restart your server when you modify this file.
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    # Allow requests from any origin
+    origins 'http://localhost:3000'
+
+    # Allow all HTTP methods
+    resource '*',
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
+  end
+end
 
 # Avoid CORS issues when API is called from the frontend app.
 # Handle Cross-Origin Resource Sharing (CORS) in order to accept cross-origin Ajax requests.

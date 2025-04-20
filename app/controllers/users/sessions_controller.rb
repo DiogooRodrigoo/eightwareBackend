@@ -6,6 +6,8 @@ class Users::SessionsController < Devise::SessionsController
     if resource.persisted?
         token = generate_jwt(resource)
 
+        logger.debug("E-mail recebido: #{params[:email]}")
+        logger.debug("Senha recebida: #{params[:password]}")
         logger.debug("Usuário autenticado: #{resource.email}")
         logger.debug("Token gerado: #{token}")
 
