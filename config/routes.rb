@@ -1,15 +1,18 @@
 Rails.application.routes.draw do
+  # Devise routes for user authentication
+  # Custom paths for session and registration controllers
   devise_for :users, path: 'auth', controllers: { 
     sessions: 'users/sessions',
     registrations: 'users/registrations' 
   }
 
-  get "auth/me", to: "users#me"
+  # Devise scope to define routes specifically for user authentication
+  devise_scope :user do
+    get 'auth/me', to: 'users/sessions#me'
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route for monitoring the status of the Rails application
+  # Commonly used in production environments for uptime monitoring
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
