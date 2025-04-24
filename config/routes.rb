@@ -1,18 +1,16 @@
 Rails.application.routes.draw do
-  # Devise routes for user authentication
-  # Custom paths for session and registration controllers
-  devise_for :users, path: 'auth', controllers: { 
+  # Definindo as rotas do Devise para autenticação de usuários com caminhos customizados
+  devise_for :users, path: 'auth', controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations' 
+    registrations: 'users/registrations'
   }
 
-  # Devise scope to define routes specifically for user authentication
+  # Definindo o escopo para a rota customizada de registro
   devise_scope :user do
+    post 'auth/sign_up', to: 'users/registrations#create', as: :user_sign_up
     get 'auth/me', to: 'users/sessions#me'
   end
 
-  # Health check route for monitoring the status of the Rails application
-  # Commonly used in production environments for uptime monitoring
+  # Rota de verificação de saúde do Rails
   get "up" => "rails/health#show", as: :rails_health_check
-
 end

@@ -4,21 +4,22 @@ class Users::SessionsController < Devise::SessionsController
   # Override the create action
   def create
     user = User.find_by(email: params[:email])
-
-    if user && user.valid_password?(params[:password])
+  
+    if user.nil?
+      render json: { error: "email_not_found", message: "E-mail não cadastrado." }, status: :unauthorized
+    elsif !user.valid_password?(params[:password])
+      render json: { error: "invalid_password", message: "Senha incorreta." }, status: :unauthorized
+    else
       token = generate_jwt(user)
-
       render json: {
-        message: "Login realizado com sucesso", 
+        message: "Login realizado com sucesso",
         user: {
-          id: user.id, 
+          id: user.id,
           full_name: user.full_name,
           email: user.email
-        }, 
+        },
         token: token
       }, status: :ok
-    else
-      render json: { message: "Erro ao realizar login" }, status: :unauthorized
     end
   end
 
